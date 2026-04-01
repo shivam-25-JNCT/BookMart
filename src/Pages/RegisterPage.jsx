@@ -1,35 +1,30 @@
-import React, { useState ,useEffect} from 'react'
-import { Button, Nav } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react'
+import { Button } from 'react-bootstrap';
 import { Form } from 'react-bootstrap';
 import { useFireBase } from '../context/FireBase';
 import { useNavigate } from 'react-router-dom';
-
-function Login() {
-  const { signinUserWithEmailAndPassword ,signinUserWithGoogle,isLoggedIn} = useFireBase();
-
-   const navigate=useNavigate();
-
+function RegisterPage() {
+  const { signUpUserWithEmailPassword,isLoggedIn } = useFireBase();
+  const navigate=useNavigate();
+  // console.log(signUpUserWithEmailPassword);
 
   const [email, setemail] = useState("");
   const [pass, setpass] = useState("");
-  // console.log(email);
-  // console.log(pass);
-//for create account
 
-useEffect(()=>{
-  if(isLoggedIn){
-    //navigate
-  navigate("/")
-  }
-},[navigate,isLoggedIn])
+
+  useEffect(()=>{
+    if(isLoggedIn){
+      //navigate
+    navigate("/")
+    }
+  },[navigate,isLoggedIn])
+//for create account
 
 const handleSubmit = async(e)=>{
 e.preventDefault();
-console.log("login user....");
+console.log("signin user....");
 
-await signinUserWithEmailAndPassword(email,pass);
-console.log("succes");
-
+await signUpUserWithEmailPassword(email,pass)
 }
   return (
     <div className='container mt-5'>
@@ -40,7 +35,9 @@ console.log("succes");
             value={email}
             onChange={(e) => setemail(e.target.value)}
             type="email" placeholder="Enter email" />
-          
+          <Form.Text className="text-muted">
+            We'll never share your email with anyone else.
+          </Form.Text>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -54,15 +51,11 @@ console.log("succes");
           
         </Form.Group>
         <Button variant="primary" type="submit">
-          Sign In
+          Create Account
         </Button>
       </Form>
-      <h2 className='my-3'>
-        OR
-      </h2>
-      <Button onClick={signinUserWithGoogle} variant='danger' >Sign in With Google</Button>
     </div>
   )
 }
 
-export default Login;
+export default RegisterPage;
